@@ -61,7 +61,7 @@ LRESULT CALLBACK keyboard_proc(int nCode, WPARAM wParam, LPARAM lParam)
     if (!capslock_down || wParam != WM_KEYDOWN)
         return CallNextHookEx(keyboard_hook, nCode, wParam, lParam);
 
-    // if someone is just peeking, or if we sent the evnet ourself, then forward to next hook
+    // if someone is just peeking, or if this is an event triggered by us, then forward to next hook
     if (nCode != HC_ACTION || kb->scanCode == capslock_scanCode)
         return CallNextHookEx(keyboard_hook, nCode, wParam, lParam);
 
