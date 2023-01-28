@@ -74,22 +74,6 @@ LRESULT CALLBACK keyboard_proc(int nCode, WPARAM wParam, LPARAM lParam)
         UnhookWindowsHookEx(keyboard_hook);
         puts("Unhook interceptor and exit program");
         exit(0);
-    case 'K':
-        keyevent_append(VK_LSHIFT, 0);
-        keyevent_append(VK_END, 0);
-        keyevent_append(VK_END, KEYEVENTF_KEYUP);
-        keyevent_append(VK_LSHIFT, KEYEVENTF_KEYUP);
-        keyevent_append(VK_LCONTROL, 0);
-        keyevent_append('X', 0);
-        keyevent_append('X', KEYEVENTF_KEYUP);
-        keyevent_append(VK_LCONTROL, KEYEVENTF_KEYUP);
-        break;
-    case 'Y':
-        keyevent_append(VK_LCONTROL, 0);
-        keyevent_append('V', 0);
-        keyevent_append('V', KEYEVENTF_KEYUP);
-        keyevent_append(VK_LCONTROL, KEYEVENTF_KEYUP);
-        break;
     case 'N':
         keyevent_append(VK_DOWN, 0);
         keyevent_append(VK_DOWN, KEYEVENTF_KEYUP);
@@ -129,6 +113,22 @@ LRESULT CALLBACK keyboard_proc(int nCode, WPARAM wParam, LPARAM lParam)
     case 'G':
         keyevent_append(VK_ESCAPE, 0);
         keyevent_append(VK_ESCAPE, KEYEVENTF_KEYUP);
+        break;
+    case 'K':
+        keyevent_append(VK_LSHIFT, 0);
+        keyevent_append(VK_END, 0);
+        keyevent_append(VK_END, KEYEVENTF_KEYUP);
+        keyevent_append(VK_LSHIFT, KEYEVENTF_KEYUP);
+        keyevent_append(VK_LCONTROL, 0);
+        keyevent_append('X', 0);
+        keyevent_append('X', KEYEVENTF_KEYUP);
+        keyevent_append(VK_LCONTROL, KEYEVENTF_KEYUP);
+        break;
+    case 'Y':
+        keyevent_append(VK_LCONTROL, 0);
+        keyevent_append('V', 0);
+        keyevent_append('V', KEYEVENTF_KEYUP);
+        keyevent_append(VK_LCONTROL, KEYEVENTF_KEYUP);
         break;
     default:
         // mute every other key while capslock_down
