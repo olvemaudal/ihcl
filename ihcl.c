@@ -130,6 +130,18 @@ LRESULT CALLBACK keyboard_proc(int nCode, WPARAM wParam, LPARAM lParam)
         keyevent_append('V', KEYEVENTF_KEYUP);
         keyevent_append(VK_LCONTROL, KEYEVENTF_KEYUP);
         break;
+    case VK_RETURN:
+        keyevent_append(VK_LCONTROL, 0);
+        keyevent_append(VK_RETURN, 0);
+        keyevent_append(VK_RETURN, KEYEVENTF_KEYUP);
+        keyevent_append(VK_LCONTROL, KEYEVENTF_KEYUP);
+        break;
+    case 'O':
+        keyevent_append(VK_LCONTROL, 0);
+        keyevent_append('O', 0);
+        keyevent_append('O', KEYEVENTF_KEYUP);
+        keyevent_append(VK_LCONTROL, KEYEVENTF_KEYUP);
+        break;
     default:
         // mute every other key while capslock_down
         break;
