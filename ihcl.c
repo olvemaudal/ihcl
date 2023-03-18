@@ -186,7 +186,7 @@ LRESULT CALLBACK mouse_proc(int nCode, WPARAM wParam, LPARAM lParam) {
 
 int main(void)
 {
-    puts("ihcl 0.94 (28jan2023) by Olve Maudal and ChatGPT");
+    puts("ihcl 0.96 (18mar2023)");
     puts("  CAPS_LOCK (L) will be intercepted and ignored...");
     puts("except");
     puts("  L-n down");
@@ -201,6 +201,9 @@ int main(void)
     puts("  L-g escape");
     puts("  L-k kill/cut to end of line");
     puts("  L-y yank/paste last kill/cut");
+    puts("  L-RETURN will send a C-RETURN");
+    puts("  L-o will send a C-o");
+    puts("  L-LBUTTONDOWN will move foreground window");
     puts("and");
     puts("  L-ESC will unhook interceptor and exit program");
 
