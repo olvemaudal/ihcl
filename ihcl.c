@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 static HHOOK keyboard_hook;
+static HHOOK mouse_hook;
 
 static const UINT capslock_scanCode = 0x3a;
 static const UINT capslock_vkCode = VK_CAPITAL;
@@ -151,6 +152,38 @@ LRESULT CALLBACK keyboard_proc(int nCode, WPARAM wParam, LPARAM lParam)
     return 1;
 }
 
+LRESULT CALLBACK mouse_proc(int nCode, WPARAM wParam, LPARAM lParam) {
+
+    static HWND window_handle = NULL;
+    static RECT window_rect = {0,0};
+    static long old_x = 0;
+    static long old_y = 0;
+
+    if (capslock_down) {
+        if (wParam == WM_LBUTTONDOWN) {
+            window_handle = GetForegroundWindow();
+            GetWindowRect(window_handle, &window_rect);
+            MSLLHOOKSTRUCT* p = (MSLLHOOKSTRUCT*)lParam;
+            old_x = p->pt.x;
+            old_y = p->pt.y;
+            return 1;
+        }
+        if (wParam == WM_LBUTTONUP) {
+            window_handle = NULL;
+            return 1;
+        }
+
+        if (window_handle) {
+            MSLLHOOKSTRUCT* p = (MSLLHOOKSTRUCT*)lParam;
+            int x = window_rect.left + (p->pt.x - old_x);
+            int y = window_rect.top + (p->pt.y - old_y);
+            SetWindowPos(window_handle, NULL, x, y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+        }
+    }
+
+    return CallNextHookEx(mouse_hook, nCode, wParam, lParam);
+}
+
 int main(void)
 {
     puts("ihcl 0.94 (28jan2023) by Olve Maudal and ChatGPT");
@@ -172,11 +205,13 @@ int main(void)
     puts("  L-ESC will unhook interceptor and exit program");
 
     keyboard_hook = SetWindowsHookEx(WH_KEYBOARD_LL, keyboard_proc, NULL, 0);
+    mouse_hook = SetWindowsHookEx(WH_MOUSE_LL, mouse_proc, NULL, 0);
     MSG message;
     while (GetMessage(&message, NULL, 0, 0)) {
         TranslateMessage(&message);
         DispatchMessage(&message);
     }
+    UnhookWindowsHookEx(mouse_hook);
     UnhookWindowsHookEx(keyboard_hook);
 
     return 0;
